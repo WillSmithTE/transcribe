@@ -19,7 +19,8 @@ def generateTranscript(url):
     client = speech_v1.SpeechClient()
     config = {
         'sample_rate_hertz': 16000,
-        'language_code': 'en-US'
+        'language_code': 'en-US',
+        'enable_automatic_punctuation': True
     }
     audio = { 'uri': url }
     logging.info('Generating transcript')
