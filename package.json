@@ -1,0 +1,8 @@
+{
+    "name": "transcribe.js",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "@google-cloud/speech": "^3.6.0"
+    }
+}
