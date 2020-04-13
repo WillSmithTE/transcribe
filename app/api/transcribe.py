@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from gcloud import main, transcribeLocal, generateTranscript
-from security import Forbidden, isValid, checkValid
+from app.service.gcloud import main, transcribeLocal, generateTranscript
+from app.service.security import Forbidden, isValid, checkValid
 
 transcribe_api = Blueprint('transcribe_api', __name__)
 

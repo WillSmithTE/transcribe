@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from security import Forbidden, isValid
+from app.service.security import Forbidden, isValid
 
 security_api = Blueprint('security_api', __name__)
 

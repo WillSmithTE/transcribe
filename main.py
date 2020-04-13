@@ -1,10 +1,10 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import os
-from security import Forbidden
-from api.metadata import metadata_api
-from api.transcribe import transcribe_api
-from api.security import security_api
+from app.service.security import Forbidden
+from app.api.metadata import metadata_api
+from app.api.transcribe import transcribe_api
+from app.api.security import security_api
 
 app = Flask(__name__)
 CORS(app)
