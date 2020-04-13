@@ -1,7 +1,13 @@
 from flask import jsonify
 
+# willyschnite
+
+VALID_TOKENS = [
+    'e4ee684fd1129640d1942c990ee91062e054ecf5042f3f293305942d7a51ebb0'
+]
+
 def isValid(token):
-    return True
+    return token in VALID_TOKENS
 
 def checkValid(token):
     if not isValid(token):

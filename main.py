@@ -1,16 +1,17 @@
-from flask import Flask
-from flask import jsonify
-from flask import request
-from gcloud import main
+from flask import Flask, jsonify
+from flask_cors import CORS
 import os
-from security import Forbidden, isValid, checkValid
+from security import Forbidden
+from api.metadata import metadata_api
+from api.transcribe import transcribe_api
+from api.security import security_api
 
 app = Flask(__name__)
+CORS(app)
 
-@app.route('/transcribe', methods=['GET'])
-def transcribe():
-    checkValid('derp')
-    return main(request.args.get('url'))
+app.register_blueprint(metadata_api)
+app.register_blueprint(transcribe_api)
+app.register_blueprint(security_api)
 
 @app.errorhandler(Forbidden)
 def handle_invalid_usage(error):
