@@ -37,7 +37,6 @@ def getJobs():
                 existingData['updatedAt'] = datetime.datetime.now().timestamp()
                 readFile.close()
                 with open('data.json', 'w') as writeFile:
-                    print(existingData)
                     json.dump(existingData, writeFile)
                     writeFile.close()
                 return jsonify(jobs)
@@ -65,3 +64,21 @@ def getDownloadUrlsForJob(id):
         'audio': audioUrl,
         'transcription': textUrl
     })
+
+def getJobData(id):
+    with open('data.json', 'r') as file:
+        data = json.load(file)
+        jobs = data['jobs']
+        for job in jobs:
+            if job['id'] == id:
+                return job
+        file.close()
+        storage_client = storage.Client()
+        bucket = storage_client.bucket('transcriptions_willsmithte')
+        blob = bucket.block('jobs/' + id + '/metadata.json')
+        blob.download_to_filename(TEMP_FILE_NAME)
+        with open(TEMP_FILE_NAME, 'r') as tempFile:
+            job = json.load(tempFile)
+            tempFile.close()
+            os.remove(tempFile)
+            return job

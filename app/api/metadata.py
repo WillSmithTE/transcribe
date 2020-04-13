@@ -5,7 +5,7 @@ import datetime
 import json
 from app.service.gcloud import getFileExtension
 import os
-from app.service.metadataService import getJobs, getDownloadUrlsForJob
+from app.service.metadataService import getJobs, getDownloadUrlsForJob, getJobData
 
 metadata_api = Blueprint('metadata_api', __name__)
 
@@ -15,16 +15,7 @@ def getAll():
 
 @metadata_api.route('/metadata/<id>', methods=['GET'])
 def getTranscriptionData(id):
-    return jsonify({
-        'id': 'KJHG1019KS',
-        'excerptLink': 'placeholderlink',
-        'length': 500,
-        'inProgress': False,
-        'language': 'en-US',
-        'cost': 5.60,
-        'deadline': 8503209,
-        'description': 'this is a really long text which does not pay great :)'
-    })
+    return getJobData(id)
 
 @metadata_api.route('/metadata/download/<id>', methods=['GET'])
 def getDownloadLinks(id):
