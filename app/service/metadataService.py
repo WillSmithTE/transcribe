@@ -7,13 +7,14 @@ from app.service.gcloud import getFileExtension
 import os
 
 REFRESH_PERIOD_SECONDS = 43200
+TEMP_FILE_NAME = 'temp.json'
 
 def dataExpired(updatedAt):
     now = datetime.datetime.now().timestamp()
     return now - updatedAt > 43200
 
 def getJobs():
-    with open('../data.json', 'r') as file:
+    with open('data.json', 'r') as file:
         data = json.load(file)
         if dataExpired(data['updatedAt']):
             file.close()
@@ -25,16 +26,20 @@ def getJobs():
             jobs = []
             for blob in blobs:
                 if getFileExtension(blob.name) == 'json':
-                    blob.download_to_filename(blob.name)
-                    with open(blob.name, 'r') as jsonFile:
-                        jobs.append(json.load(jsonFile))
-                        jsonFile.close()
-                    os.remove(blob.name)
-            with open('../data.json', 'a+') as jsonFile:
-                existingData = json.load(jsonFile)
+                    blob.download_to_filename(TEMP_FILE_NAME)
+                    with open(TEMP_FILE_NAME, 'r') as jobFile:
+                        jobs.append(json.load(jobFile))
+                        jobFile.close()
+                    os.remove(TEMP_FILE_NAME)
+            with open('data.json', 'r') as readFile:
+                existingData = json.load(readFile)
                 existingData['jobs'] = jobs
-                existingData['updatedAt'] = datetime.datetime.now().timestamp
-                json.dump(existingData, jsonFile)
+                existingData['updatedAt'] = datetime.datetime.now().timestamp()
+                readFile.close()
+                with open('data.json', 'w') as writeFile:
+                    print(existingData)
+                    json.dump(existingData, writeFile)
+                    writeFile.close()
                 return jsonify(jobs)
         else:
             file.close()
